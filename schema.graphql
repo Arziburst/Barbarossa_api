@@ -1,0 +1,73 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CatGqlOutput {
+  _id: ID!
+  name: String!
+  age: Int!
+}
+
+type Test {
+  _id: String!
+  testNumber: Float!
+  title: String
+  description: String
+  lessons: [Lesson!]!
+}
+
+type Lesson {
+  _id: String!
+  lessonNumber: Float!
+  title: String
+  description: String
+  tests: [Test!]!
+}
+
+type Query {
+  cats: [CatGqlOutput!]!
+  lessons: [Lesson!]!
+  tests: [Test!]!
+}
+
+type Mutation {
+  createCat(input: CatInput!): CatGqlOutput!
+  createLesson(input: LessonCreateInput!): Lesson!
+  updateLesson(input: UpdateLessonInput!): Lesson!
+  createTest(input: CreateTestInput!): Test!
+  updateTest(input: UpdateTestInput!): Test!
+}
+
+input CatInput {
+  name: String!
+  age: Int!
+}
+
+input LessonCreateInput {
+  lessonNumber: Int!
+  title: String
+  description: String
+}
+
+input UpdateLessonInput {
+  _id: ID!
+  lessonNumber: Int
+  title: String
+  description: String
+  tests: [String!]
+}
+
+input CreateTestInput {
+  testNumber: Int!
+  title: String
+  description: String
+  lessonId: ID!
+}
+
+input UpdateTestInput {
+  _id: ID!
+  testNumber: Int
+  title: String
+  description: String
+  lessons: [String!]
+}
