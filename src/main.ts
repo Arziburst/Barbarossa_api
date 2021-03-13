@@ -4,25 +4,22 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
-// import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 // App
 import { AppModule } from './app.module';
-// import { getConnectionManager } from 'typeorm';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     const configService = app.get(ConfigService);
     const port = configService.get('PORT') ?? 4000;
 
-    // getConnectionManager()
-    //     .get('default')
-    //     .runMigrations();
-
     app.set('trust proxy', 1);
     app.use(cookieParser());
-    // app.use(bodyParser.json());
-    // app.use(bodyParser.urlencoded({ extended: true }));
     app.useGlobalPipes(new ValidationPipe());
     app.enableCors({
         origin: [
@@ -38,7 +35,7 @@ async function bootstrap() {
 
     await app.listen(port);
 
-    Logger.log(`🚀 Server running on http://localhost:${port}`, 'NestApplication');
+    Logger.log(`🚀 Graphql server running on http://localhost:${port}/graphql`, 'NestApplication');
 }
 
 bootstrap();

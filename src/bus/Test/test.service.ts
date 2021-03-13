@@ -6,14 +6,17 @@ import { InjectModel } from '@nestjs/mongoose';
 // Input
 import { CreateTestInput, UpdateTestInput } from './test.inputs';
 
-import { Test, TestDocument } from './test.schema';
+import { Test, TestDocument } from './test.entity';
 
 @Injectable()
 export class TestService {
     constructor(@InjectModel('Test') private readonly testModel: Model<TestDocument>) {}
 
     async createOne(input: CreateTestInput): Promise<Test> {
-        const newTest = new this.testModel(input);
+        const newTest = new this.testModel({
+            ...input,
+            lesson: input.lessonId,
+        });
 
         return await newTest.save();
     }
@@ -26,7 +29,7 @@ export class TestService {
 
     async updateOne(input: UpdateTestInput): Promise<Test | null> {
         const updatedTest = await this.testModel
-            .findByIdAndUpdate(input._id, input, { new: true, useFindAndModify: false })
+            .findByIdAndUpdate(input._id, input, { new: true })
             .exec();
 
         return updatedTest;

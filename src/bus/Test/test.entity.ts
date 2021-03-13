@@ -1,16 +1,16 @@
 // Core
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Document, ObjectId, Schema as MongooseSchema } from 'mongoose';
 
 // Schemas
-import { Lesson } from '../Lesson/lesson.schema';
+import { Lesson } from '../Lesson/lesson.entity';
 
 @ObjectType()
 @Schema()
 export class Test {
-    @Field(() => String)
-    _id: MongooseSchema.Types.ObjectId;
+    @Field(() => ID)
+    _id: ObjectId;
 
     @Field(() => Number)
     @Prop()
@@ -24,9 +24,9 @@ export class Test {
     @Prop()
     description?: string;
 
-    @Field(() => [ Lesson ])
-    @Prop({ type: [ MongooseSchema.Types.ObjectId ], ref: 'Lesson' })
-    lessons: MongooseSchema.Types.ObjectId[];
+    @Field(() => Lesson)
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Lesson' })
+    lesson: ObjectId;
 }
 
 export type TestDocument = Test & Document;

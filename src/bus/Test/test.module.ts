@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { LessonModule } from '../Lesson/lesson.module';
 
 // Tools
-import { TestSchema } from './test.schema';
+import { TestSchema } from './test.entity';
 import { TestsResolver } from './test.resolver';
 import { TestService } from './test.service';
 

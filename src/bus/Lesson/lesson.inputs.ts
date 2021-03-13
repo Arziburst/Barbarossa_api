@@ -1,36 +1,51 @@
 // Core
-import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { Schema as MongooseSchema } from 'mongoose';
-
-// Schemas
-// import { Test } from '../Test/test.schema';
+import { Field, InputType, ID } from '@nestjs/graphql';
+import { ObjectId } from 'mongoose';
+import { IsString, IsNumber, IsOptional, MinLength, IsMongoId } from 'class-validator';
 
 @InputType()
 export class LessonCreateInput {
-    @Field(() => Int)
+    @Field()
+    @IsNumber()
     lessonNumber: number;
 
-    @Field(() => String, { nullable: true })
+    @Field({ nullable: true })
+    @IsOptional()
+    @IsString()
+    @MinLength(3)
     title?: string;
 
-    @Field(() => String, { nullable: true })
+    @Field({ nullable: true })
+    @IsOptional()
+    @IsString()
+    @MinLength(3)
     description?: string;
 }
 
 @InputType()
 export class UpdateLessonInput {
     @Field(() => ID)
-    _id: MongooseSchema.Types.ObjectId;
+    @IsMongoId()
+    _id: ObjectId;
 
-    @Field(() => Int, { nullable: true })
+    @Field({ nullable: true })
+    @IsOptional()
+    @IsNumber()
     lessonNumber?: number;
 
-    @Field(() => String, { nullable: true })
+    @Field({ nullable: true })
+    @IsOptional()
+    @IsString()
+    @MinLength(3)
     title?: string;
 
-    @Field(() => String, { nullable: true })
+    @Field({ nullable: true })
+    @IsOptional()
+    @IsString()
+    @MinLength(3)
     description?: string;
 
+    /* ---------------------- RELATIONS ---------------------- */
     @Field(() => [ String ], { nullable: true })
-    tests?: MongooseSchema.Types.ObjectId[];
+    tests?: ObjectId[];
 }

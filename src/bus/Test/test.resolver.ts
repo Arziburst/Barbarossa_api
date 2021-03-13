@@ -1,18 +1,25 @@
 // Core
+import { Inject } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
 
-// Tools
+// Services
 import { TestService } from './test.service';
+import { LessonService } from '../Lesson/lesson.service';
 
 // Inputs
 import { CreateTestInput, UpdateTestInput } from './test.inputs';
 
 // Schemas
-import { Test, TestDocument } from './test.schema';
+import { Test, TestDocument } from './test.entity';
+import { CreateTestOutput } from './test.outputs';
 
 @Resolver(() => Test)
 export class TestsResolver {
-    constructor(private readonly testService: TestService) {}
+    constructor(
+        private readonly testService: TestService,
+        @Inject(LessonService)
+        private readonly lessonService: LessonService,
+    ) {}
 
     @Query(() => [ Test ])
     async tests() {
@@ -21,11 +28,19 @@ export class TestsResolver {
         return tests;
     }
 
-    @Mutation(() => Test)
-    async createTest(@Args('input') input: CreateTestInput) {
-        const newTest = await this.testService.createOne(input);
+    @Mutation(() => CreateTestOutput)
+    async createTest(@Args('input') input: CreateTestInput): Promise<CreateTestOutput> {
+        const createdTest = await this.testService.createOne(input);
+        const findedLessonById = await this.lessonService.findById(input.lessonId);
+        const updatedLesson = await this.lessonService.updateOne({
+            _id:   input.lessonId,
+            tests: [ ...findedLessonById!.tests, createdTest._id ],
+        });
 
-        return newTest;
+        return {
+            updatedLesson,
+            createdTest,
+        };
     }
 
     @Mutation(() => Test)
@@ -34,11 +49,13 @@ export class TestsResolver {
     }
 
     @ResolveField()
-    async lessons(@Parent() test: TestDocument) {
-        await test
-            .populate({ path: 'lessons', model: 'Lesson' })
-            .execPopulate();
+    async lesson(@Parent() test: TestDocument, @Args('populate') populate: Boolean) {
+        if (populate) {
+            await test
+                .populate({ path: 'lesson', model: 'Lesson' })
+                .execPopulate();
+        }
 
-        return test.lessons;
+        return test.lesson;
     }
 }

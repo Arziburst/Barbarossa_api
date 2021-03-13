@@ -5,7 +5,7 @@ import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/g
 import { LessonService } from './lesson.service';
 
 // Schemas
-import { Lesson, LessonDocument } from './lesson.schema';
+import { Lesson, LessonDocument } from './lesson.entity';
 
 // Inputs
 import { LessonCreateInput, UpdateLessonInput } from './lesson.inputs';
@@ -34,10 +34,12 @@ export class LessonsResolver {
     }
 
     @ResolveField()
-    async tests(@Parent() lesson: LessonDocument) {
-        await lesson
-            .populate({ path: 'tests', model: 'Test' })
-            .execPopulate();
+    async tests(@Parent() lesson: LessonDocument, @Args('populate') populate: Boolean = false) {
+        if (populate) {
+            await lesson
+                .populate({ path: 'tests', model: 'Test' })
+                .execPopulate();
+        }
 
         return lesson.tests;
     }

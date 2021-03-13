@@ -9,19 +9,24 @@ type CatGqlOutput {
 }
 
 type Test {
-  _id: String!
+  _id: ID!
   testNumber: Float!
   title: String
   description: String
-  lessons: [Lesson!]!
+  lesson(populate: Boolean!): Lesson!
 }
 
 type Lesson {
-  _id: String!
+  _id: ID!
   lessonNumber: Float!
   title: String
   description: String
-  tests: [Test!]!
+  tests(populate: Boolean!): [Test!]!
+}
+
+type CreateTestOutput {
+  updatedLesson: Lesson!
+  createdTest: Test!
 }
 
 type Query {
@@ -34,7 +39,7 @@ type Mutation {
   createCat(input: CatInput!): CatGqlOutput!
   createLesson(input: LessonCreateInput!): Lesson!
   updateLesson(input: UpdateLessonInput!): Lesson!
-  createTest(input: CreateTestInput!): Test!
+  createTest(input: CreateTestInput!): CreateTestOutput!
   updateTest(input: UpdateTestInput!): Test!
 }
 
@@ -44,14 +49,14 @@ input CatInput {
 }
 
 input LessonCreateInput {
-  lessonNumber: Int!
+  lessonNumber: Float!
   title: String
   description: String
 }
 
 input UpdateLessonInput {
   _id: ID!
-  lessonNumber: Int
+  lessonNumber: Float
   title: String
   description: String
   tests: [String!]
@@ -61,7 +66,7 @@ input CreateTestInput {
   testNumber: Int!
   title: String
   description: String
-  lessonId: ID!
+  lessonId: String!
 }
 
 input UpdateTestInput {
@@ -69,5 +74,5 @@ input UpdateTestInput {
   testNumber: Int
   title: String
   description: String
-  lessons: [String!]
+  lessons: String
 }

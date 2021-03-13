@@ -1,12 +1,12 @@
 // Core
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 // Input
 import { LessonCreateInput, UpdateLessonInput } from './lesson.inputs';
 
-import { Lesson, LessonDocument } from './lesson.schema';
+import { Lesson, LessonDocument } from './lesson.entity';
 
 @Injectable()
 export class LessonService {
@@ -19,14 +19,24 @@ export class LessonService {
     }
 
     async findAll(): Promise<Lesson[]> {
-        const lessons = await this.lessonModel.find().exec();
+        const lessons = await this.lessonModel
+            .find()
+            .exec();
 
         return lessons;
     }
 
+    async findById(lessonId: ObjectId): Promise<Lesson | null> {
+        const lesson = await this.lessonModel
+            .findById(lessonId)
+            .exec();
+
+        return lesson;
+    }
+
     async updateOne(input: UpdateLessonInput): Promise<Lesson | null> {
         const updatedLesson = await this.lessonModel
-            .findByIdAndUpdate(input._id, input, { new: true, useFindAndModify: false })
+            .findByIdAndUpdate(input._id, input, { new: true })
             .exec();
 
         return updatedLesson;
