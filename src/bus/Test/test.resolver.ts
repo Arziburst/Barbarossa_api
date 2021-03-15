@@ -6,12 +6,12 @@ import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/g
 import { TestService } from './test.service';
 import { LessonService } from '../Lesson/lesson.service';
 
-// Inputs
-import { CreateTestInput, UpdateTestInput } from './test.inputs';
+// Inputs & outputs
+import { CreateTestInput, UpdateTestInput, TestsOfLessonInput } from './test.inputs';
+import { CreateTestOutput/* , TestsOfLessonOutput */ } from './test.outputs';
 
 // Schemas
 import { Test, TestDocument } from './test.entity';
-import { CreateTestOutput } from './test.outputs';
 
 @Resolver(() => Test)
 export class TestsResolver {
@@ -26,6 +26,13 @@ export class TestsResolver {
         const tests = await this.testService.findAll();
 
         return tests;
+    }
+
+    @Query(() => [ Test ])
+    async testsOfLesson(@Args('input') input: TestsOfLessonInput): Promise<Test[]> {
+        const testsOfLesson = await this.testService.findTestsOfLesson(input);
+
+        return testsOfLesson;
     }
 
     @Mutation(() => CreateTestOutput)

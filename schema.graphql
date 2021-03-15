@@ -33,6 +33,11 @@ type Query {
   cats: [CatGqlOutput!]!
   lessons: [Lesson!]!
   tests: [Test!]!
+  testsOfLesson(input: TestsOfLessonInput!): [Test!]!
+}
+
+input TestsOfLessonInput {
+  lessonId: ID!
 }
 
 type Mutation {

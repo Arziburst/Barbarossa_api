@@ -1,10 +1,10 @@
 // Core
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 // Input
-import { CreateTestInput, UpdateTestInput } from './test.inputs';
+import { CreateTestInput, TestsOfLessonInput, UpdateTestInput } from './test.inputs';
 
 import { Test, TestDocument } from './test.entity';
 
@@ -27,11 +27,23 @@ export class TestService {
         return tests;
     }
 
+    async findTestsOfLesson({ lessonId }: TestsOfLessonInput): Promise<Test[]> {
+        const tests = await this.testModel.find({ lesson: lessonId }).exec();
+
+        return tests;
+    }
+
     async updateOne(input: UpdateTestInput): Promise<Test | null> {
         const updatedTest = await this.testModel
             .findByIdAndUpdate(input._id, input, { new: true })
             .exec();
 
         return updatedTest;
+    }
+
+    async findOneAndRemove(testId: ObjectId): Promise<boolean> {
+        await this.testModel.findOneAndRemove({ _id: testId });
+
+        return true;
     }
 }

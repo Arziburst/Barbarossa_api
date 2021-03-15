@@ -48,3 +48,9 @@ export class UpdateTestInput {
     @Field(() => String, { nullable: true })
     lessons?: ObjectId;
 }
+@InputType()
+export class TestsOfLessonInput {
+    @Field(() => ID)
+    @IsMongoId()
+    lessonId: ObjectId;
+}
