@@ -13,9 +13,3 @@ export class CreateTestOutput {
     @Field(() => Test)
     createdTest: Test;
 }
-
-@ObjectType()
-export class TestsOfLessonOutput {
-    @Field(() => [ Test ])
-    testsOfLesson: Test[];
-}

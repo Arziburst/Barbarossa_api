@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type CatGqlOutput {
-  _id: ID!
-  name: String!
-  age: Int!
-}
-
 type Test {
   _id: ID!
   testNumber: Float!
@@ -30,7 +24,6 @@ type CreateTestOutput {
 }
 
 type Query {
-  cats: [CatGqlOutput!]!
   lessons: [Lesson!]!
   tests: [Test!]!
   testsOfLesson(input: TestsOfLessonInput!): [Test!]!
@@ -41,16 +34,10 @@ input TestsOfLessonInput {
 }
 
 type Mutation {
-  createCat(input: CatInput!): CatGqlOutput!
   createLesson(input: LessonCreateInput!): Lesson!
   updateLesson(input: UpdateLessonInput!): Lesson!
   createTest(input: CreateTestInput!): CreateTestOutput!
   updateTest(input: UpdateTestInput!): Test!
-}
-
-input CatInput {
-  name: String!
-  age: Int!
 }
 
 input LessonCreateInput {

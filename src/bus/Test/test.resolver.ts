@@ -8,7 +8,7 @@ import { LessonService } from '../Lesson/lesson.service';
 
 // Inputs & outputs
 import { CreateTestInput, UpdateTestInput, TestsOfLessonInput } from './test.inputs';
-import { CreateTestOutput/* , TestsOfLessonOutput */ } from './test.outputs';
+import { CreateTestOutput } from './test.outputs';
 
 // Schemas
 import { Test, TestDocument } from './test.entity';
