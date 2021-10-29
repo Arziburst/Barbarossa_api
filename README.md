@@ -6,25 +6,21 @@ npm i
     APP_NAME
     NODE_ENV
     PORT
-    POSTGRES_USER
-    POSTGRES_PASSWORD
-    POSTGRES_DB
-    DATABASE_URL
 }
 
 npm run build
 
-docker build -t arziburst/barbarossa_api .
+docker build -t arziburst/barbarossa_graphql .
 
-docker push arziburst/barbarossa_api
+docker push arziburst/barbarossa_graphql
 
 <!-- droplet -->
 
-docker pull arziburst/barbarossa_api
+docker pull arziburst/barbarossa_graphql
 
-docker tag arziburst/barbarossa_api dokku/api
+docker tag arziburst/barbarossa_graphql dokku/graphql
 
-dokku tags:deploy api
+dokku tags:deploy graphql
 
 <!-- Dokku fast docs -->
 dokku [module]:[report|help] 

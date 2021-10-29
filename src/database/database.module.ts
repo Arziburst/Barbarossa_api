@@ -8,7 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         MongooseModule.forRootAsync({
             imports:    [ ConfigModule ],
             useFactory: (configService: ConfigService) => ({
-                uri:               configService.get('DATABASE_URL'),
+                uri: configService.get('MONGO_URL'),
                 connectionFactory: (connection) => {
                     // eslint-disable-next-line global-require
                     connection.plugin(require('mongoose-autopopulate'));

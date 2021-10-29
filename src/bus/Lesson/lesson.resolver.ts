@@ -37,8 +37,7 @@ export class LessonsResolver {
     async tests(@Parent() lesson: LessonDocument, @Args('populate') populate: Boolean = false) {
         if (populate) {
             await lesson
-                .populate({ path: 'tests', model: 'Test' })
-                .execPopulate();
+                .populate({ path: 'tests', model: 'Test' });
         }
 
         return lesson.tests;

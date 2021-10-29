@@ -5,7 +5,6 @@ parserOptions:
     sourceType: module
     ecmaFeatures:
         impliedStrict: true
-        # jsx: false
         legacyDecorators: true
 
 env:

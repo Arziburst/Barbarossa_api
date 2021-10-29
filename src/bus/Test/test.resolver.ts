@@ -58,9 +58,7 @@ export class TestsResolver {
     @ResolveField()
     async lesson(@Parent() test: TestDocument, @Args('populate') populate: Boolean) {
         if (populate) {
-            await test
-                .populate({ path: 'lesson', model: 'Lesson' })
-                .execPopulate();
+            await test.populate({ path: 'lesson', model: 'Lesson' });
         }
 
         return test.lesson;
